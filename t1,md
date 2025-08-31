@@ -1,0 +1,4 @@
+first of all when the system loads behind the scenes the entire quiz questions for right and wrong answers are being loaded
+but for the user this part looks just like its disabled we need some sort of elegant preloder 
+
+the time between selecting an answer and recieving 

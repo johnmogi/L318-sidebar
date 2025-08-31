@@ -1,0 +1,629 @@
+<?php
+/**
+ * Main class for Quiz Sidebar functionality
+ *
+ * @package Lilac_Quiz_Sidebar
+ */
+
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * Class Lilac_Quiz_Sidebar
+ * 
+ * Handles the sidebar functionality for LearnDash quizzes
+ */
+class Lilac_Quiz_Sidebar {
+    /**
+     * Instance of this class
+     *
+     * @var Lilac_Quiz_Sidebar
+     */
+    private static $instance = null;
+
+    /**
+     * Meta keys for storing quiz settings
+     */
+    const TOGGLE_SIDEBAR_META_KEY = '_ld_quiz_toggle_sidebar';
+    const ENFORCE_HINT_META_KEY = '_ld_quiz_enforce_hint';
+
+    /**
+     * Constructor
+     */
+    private function __construct() {
+        // Register metabox for quiz editor
+        add_action('add_meta_boxes', array($this, 'add_sidebar_toggle_metabox'));
+        
+        // Save metabox data
+        add_action('save_post_sfwd-quiz', array($this, 'save_sidebar_toggle_metabox'));
+        
+        // Override template for sidebar
+        add_filter('template_include', array($this, 'load_sidebar_template'), 999);
+        
+        // Enqueue scripts and styles
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts_styles'));
+        
+        // Add admin columns
+        add_filter('manage_sfwd-quiz_posts_columns', array($this, 'add_admin_columns'));
+        add_action('manage_sfwd-quiz_posts_custom_column', array($this, 'render_admin_columns'), 10, 2);
+        
+        // Register AJAX handlers
+        add_action('wp_ajax_get_question_acf_media', array($this, 'get_question_acf_media'));
+        add_action('wp_ajax_nopriv_get_question_acf_media', array($this, 'get_question_acf_media'));
+        add_action('wp_ajax_update_quiz_sidebar_settings', array($this, 'ajax_update_quiz_sidebar_settings'));
+        add_action('wp_ajax_check_quiz_enforce_hint', array($this, 'check_quiz_enforce_hint'));
+        add_action('wp_ajax_nopriv_check_quiz_enforce_hint', array($this, 'check_quiz_enforce_hint'));
+        
+        // Admin scripts and quick edit support
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+        add_action('quick_edit_custom_box', array($this, 'add_quick_edit_fields'), 10, 2);
+        add_action('bulk_edit_custom_box', array($this, 'add_bulk_edit_fields'), 10, 2);
+        add_action('save_post', array($this, 'save_quick_edit_data'));
+        
+        // Disable debug panel display
+        add_action('wp_footer', array($this, 'disable_debug_panel'), 999);
+    }
+
+    /**
+     * Get instance of this class
+     *
+     * @return Lilac_Quiz_Sidebar
+     */
+    public static function get_instance() {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Add metabox for toggling sidebar
+     */
+    public function add_sidebar_toggle_metabox() {
+        add_meta_box(
+            'lilac_quiz_sidebar_toggle',
+            __('Quiz Media Sidebar', 'lilac-quiz-sidebar'),
+            array($this, 'render_sidebar_toggle_metabox'),
+            'sfwd-quiz',
+            'side',
+            'default'
+        );
+    }
+
+    /**
+     * Render metabox content
+     *
+     * @param WP_Post $post Current post object
+     */
+    public function render_sidebar_toggle_metabox($post) {
+        // Add nonce for security
+        wp_nonce_field('lilac_quiz_sidebar_toggle_save', 'lilac_quiz_sidebar_nonce');
+        
+        // Get current values
+        $toggle_sidebar = get_post_meta($post->ID, self::TOGGLE_SIDEBAR_META_KEY, true);
+        $enforce_hint = get_post_meta($post->ID, self::ENFORCE_HINT_META_KEY, true);
+        ?>
+        <div class="lilac-quiz-sidebar-metabox">
+            <p>
+                <label for="lilac_quiz_toggle_sidebar">
+                    <input type="checkbox" id="lilac_quiz_toggle_sidebar" name="lilac_quiz_toggle_sidebar" 
+                        value="1" <?php checked($toggle_sidebar, '1'); ?> />
+                    <strong><?php _e('Enable Media Sidebar', 'lilac-quiz-sidebar'); ?></strong>
+                </label>
+            </p>
+            <p class="description">
+                <?php _e('When enabled, this quiz will display with a sidebar that shows media content for each question.', 'lilac-quiz-sidebar'); ?>
+            </p>
+            <hr style="margin: 15px 0;" />
+            <p>
+                <label for="lilac_quiz_enforce_hint">
+                    <input type="checkbox" id="lilac_quiz_enforce_hint" name="lilac_quiz_enforce_hint" 
+                        value="1" <?php checked($enforce_hint, '1'); ?> />
+                    <strong><?php _e('Enforce Hint', 'lilac-quiz-sidebar'); ?></strong>
+                </label>
+            </p>
+            <p class="description">
+                <?php _e('When enabled, users must view hints after submitting incorrect answers before proceeding.', 'lilac-quiz-sidebar'); ?>
+            </p>
+        </div>
+        <?php
+    }
+
+    /**
+     * Save metabox data
+     *
+     * @param int $post_id Post ID
+     */
+    public function save_sidebar_toggle_metabox($post_id) {
+        // Check if this is an autosave
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+        
+        // Check nonce
+        if (!isset($_POST['lilac_quiz_sidebar_nonce']) || 
+            !wp_verify_nonce($_POST['lilac_quiz_sidebar_nonce'], 'lilac_quiz_sidebar_toggle_save')) {
+            return;
+        }
+        
+        // Check permissions
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+        
+        // Save sidebar toggle state
+        if (isset($_POST['lilac_quiz_toggle_sidebar'])) {
+            update_post_meta($post_id, self::TOGGLE_SIDEBAR_META_KEY, '1');
+        } else {
+            delete_post_meta($post_id, self::TOGGLE_SIDEBAR_META_KEY);
+        }
+        
+        // Save enforce hint state
+        if (isset($_POST['lilac_quiz_enforce_hint'])) {
+            update_post_meta($post_id, self::ENFORCE_HINT_META_KEY, '1');
+        } else {
+            delete_post_meta($post_id, self::ENFORCE_HINT_META_KEY);
+        }
+    }
+
+    /**
+     * Load sidebar template for quizzes with sidebar enabled
+     *
+     * @param string $template Current template path
+     * @return string Modified template path
+     */
+    public function load_sidebar_template($template) {
+        if (is_singular('sfwd-quiz')) {
+            $quiz_id = get_the_ID();
+            $has_sidebar = get_post_meta($quiz_id, self::TOGGLE_SIDEBAR_META_KEY, true);
+            
+            if ($has_sidebar === '1') {
+                $custom_template = LILAC_QUIZ_SIDEBAR_PLUGIN_DIR . 'templates/single-quiz-sidebar.php';
+                
+                if (file_exists($custom_template)) {
+                    return $custom_template;
+                }
+            }
+        }
+        
+        return $template;
+    }
+
+    /**
+     * Enqueue scripts and styles
+     */
+    public function enqueue_scripts_styles() {
+        if (is_singular('sfwd-quiz')) {
+            $quiz_id = get_the_ID();
+            $has_sidebar = get_post_meta($quiz_id, self::TOGGLE_SIDEBAR_META_KEY, true);
+            $enforce_hint = get_post_meta($quiz_id, self::ENFORCE_HINT_META_KEY, true);
+            
+            // Always load debug script in development
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                wp_enqueue_script(
+                    'lilac-quiz-debug-loader',
+                    LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/js/debug-script-loader.js',
+                    array('jquery'),
+                    LILAC_QUIZ_SIDEBAR_VERSION,
+                    true
+                );
+            }
+            
+            // If sidebar is enabled, load sidebar scripts and styles
+            if ($has_sidebar === '1') {
+                // Enqueue CSS
+                wp_enqueue_style(
+                    'lilac-quiz-sidebar-style',
+                    LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/css/quiz-sidebar.css',
+                    array(),
+                    LILAC_QUIZ_SIDEBAR_VERSION
+                );
+                
+                // Enqueue direct-injected sidebar CSS
+                wp_enqueue_style(
+                    'lilac-quiz-direct-sidebar-style',
+                    LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/css/direct-injected-sidebar.css',
+                    array('lilac-quiz-sidebar-style'),
+                    LILAC_QUIZ_SIDEBAR_VERSION
+                );
+                
+                // Enqueue JavaScript
+                wp_enqueue_script(
+                    'lilac-quiz-sidebar-media',
+                    LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/js/quiz-sidebar-media.js',
+                    array('jquery'),
+                    LILAC_QUIZ_SIDEBAR_VERSION,
+                    true
+                );
+                
+                // Enqueue direct sidebar injection JavaScript
+                wp_enqueue_script(
+                    'lilac-quiz-sidebar-injection',
+                    LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/js/quiz-sidebar-injection.js',
+                    array('jquery', 'lilac-quiz-sidebar-media'),
+                    LILAC_QUIZ_SIDEBAR_VERSION,
+                    true
+                );
+                
+                // Enqueue direct sidebar media JavaScript for answer-specific media
+                wp_enqueue_script(
+                    'lilac-quiz-direct-sidebar-media',
+                    LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/js/direct-sidebar-media.js',
+                    array('jquery', 'lilac-quiz-sidebar-media'),
+                    LILAC_QUIZ_SIDEBAR_VERSION,
+                    true
+                );
+                
+                // Localize script with AJAX URL and nonce
+                wp_localize_script('lilac-quiz-sidebar-media', 'lilacQuizSidebar', array(
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('lilac_quiz_sidebar_nonce'),
+                    'debug' => defined('WP_DEBUG') && WP_DEBUG,
+                    'fallbackImageUrl' => plugins_url('/assets/images/default-media.png', LILAC_QUIZ_SIDEBAR_PLUGIN_DIR),
+                ));
+            }
+            
+            // If hint enforcement is enabled, load that functionality
+            if ($enforce_hint === '1') {
+                // Enqueue CSS for hint enforcement
+                wp_enqueue_style(
+                    'lilac-quiz-answer-reselection',
+                    LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/css/quiz-answer-reselection.css',
+                    array(),
+                    LILAC_QUIZ_SIDEBAR_VERSION
+                );
+                
+                // Enqueue JavaScript for hint enforcement with correct dependencies
+                wp_enqueue_script(
+                    'lilac-quiz-answer-reselection',
+                    LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/js/quiz-answer-reselection.js',
+                    array('jquery'),  // Remove dependency handles as they might not be registered correctly
+                    LILAC_QUIZ_SIDEBAR_VERSION,
+                    true
+                );
+                
+                // Add inline script to check if script is loaded
+                wp_add_inline_script('lilac-quiz-answer-reselection', 
+                    'console.log("Lilac Quiz: Answer Reselection script loaded successfully");',
+                    'before'
+                );
+                
+                // Add debug information directly in page
+                add_action('wp_footer', function() {
+                    echo '<script>
+                        console.log("DEBUG: Trying to output debug information");
+                        console.log("DEBUG: Checking for quiz script at: ' . LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/js/quiz-answer-reselection.js");
+                        
+                        // Create a script tag and append to document to force load
+                        if (typeof jQuery !== "undefined") {
+                            jQuery(document).ready(function($) {
+                                // Add a special debug script tag that will run if appended successfully
+                                var scriptTag = document.createElement("script");
+                                scriptTag.src = "' . LILAC_QUIZ_SIDEBAR_PLUGIN_URL . 'assets/js/quiz-answer-reselection.js?v=" + new Date().getTime();
+                                scriptTag.onload = function() {
+                                    console.log("DEBUG: Successfully loaded quiz script manually!");
+                                };
+                                scriptTag.onerror = function() {
+                                    console.error("DEBUG: Failed to load quiz script manually!");
+                                };
+                                document.body.appendChild(scriptTag);
+                            });
+                        }
+                    </script>';
+                }, 999);
+                
+                // Localize script
+                wp_localize_script('lilac-quiz-answer-reselection', 'lilacHintEnforcement', array(
+                    'debug' => defined('WP_DEBUG') && WP_DEBUG,
+                    'tooltipText' => __('טעית! להמשך חובה לקחת רמז!', 'lilac-quiz-sidebar'),
+                    'quizId' => $quiz_id,
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('lilac_quiz_hint_nonce')
+                ));
+                
+                // Add inline script to log when our script is loaded
+                wp_add_inline_script('lilac-quiz-answer-reselection', 
+                    'console.log("Lilac Quiz: Answer Reselection script loaded successfully");',
+                    'after'
+                );
+            }
+        }
+    }
+
+    /**
+     * Add admin columns for quiz list
+     *
+     * @param array $columns Current columns
+     * @return array Modified columns
+     */
+    public function add_admin_columns($columns) {
+        $new_columns = array();
+        
+        foreach ($columns as $key => $value) {
+            $new_columns[$key] = $value;
+            
+            if ($key === 'title') {
+                $new_columns['quiz_sidebar'] = __('Media Sidebar', 'lilac-quiz-sidebar');
+                $new_columns['quiz_enforce_hint'] = __('Enforce Hint', 'lilac-quiz-sidebar');
+            }
+        }
+        
+        return $new_columns;
+    }
+
+    /**
+     * Render admin column content
+     *
+     * @param string $column Column name
+     * @param int $post_id Post ID
+     */
+    public function render_admin_columns($column, $post_id) {
+        if ($column === 'quiz_sidebar') {
+            $has_sidebar = get_post_meta($post_id, self::TOGGLE_SIDEBAR_META_KEY, true);
+            echo $has_sidebar ? __('Enabled', 'lilac-quiz-sidebar') : __('Disabled', 'lilac-quiz-sidebar');
+        } else if ($column === 'quiz_enforce_hint') {
+            $enforce_hint = get_post_meta($post_id, self::ENFORCE_HINT_META_KEY, true);
+            echo $enforce_hint ? __('Enabled', 'lilac-quiz-sidebar') : __('Disabled', 'lilac-quiz-sidebar');
+        }
+    }
+
+    /**
+     * AJAX handler for getting question media
+     */
+    public function get_question_acf_media() {
+        // Debug disabled - production mode
+        $debug_mode = false;
+        $debug_data = [];
+        
+        // Minimal logging for critical errors only
+        $debug_data = [
+            'error' => false
+        ];
+        
+        // Check nonce for security
+        if (isset($_POST['nonce'])) {
+            $valid_nonce = wp_verify_nonce($_POST['nonce'], 'get_question_acf_media_nonce');
+            
+            if (!$valid_nonce && !defined('WP_DEBUG')) {
+                wp_send_json_error(['message' => 'Security check failed']);
+                return;
+            }
+        }
+        
+        // Check if question ID is set
+        if (!isset($_POST['question_id']) || empty($_POST['question_id'])) {
+            $debug_data['error'] = 'missing_question_id';
+            $debug_data['debug_log'][] = 'ERROR: No question ID provided';
+            wp_send_json_error(['message' => 'No question ID provided', 'debug' => $debug_data]);
+            return;
+        }
+        
+        // Use a placeholder implementation for now
+        $response = [
+            'type' => 'image',
+            'url' => 'https://via.placeholder.com/400x300?text=Question+Media',
+            'alt' => 'Placeholder image',
+            'fallback' => true
+        ];
+        
+        wp_send_json_success(['media' => $response]);
+    }
+    
+    /**
+     * AJAX handler for getting answer-specific media
+     */
+    public function get_answer_specific_media() {
+        // Debug output
+        error_log('LILAC DEBUG: get_answer_specific_media function called');
+        
+        // Check nonce for security
+        check_ajax_referer('lilac_quiz_sidebar_nonce', 'nonce');
+        
+        // Verify we have the required data
+        if (!isset($_POST['question_id']) || !isset($_POST['answer_id'])) {
+            error_log('LILAC DEBUG: Missing required parameters');
+            wp_send_json_error(array('message' => 'Missing required parameters'));
+            return;
+        }
+        
+        error_log('LILAC DEBUG: Received question_id: ' . $_POST['question_id'] . ', answer_id: ' . $_POST['answer_id']);
+        
+        // Get question and answer IDs
+        $question_id = intval($_POST['question_id']);
+        $answer_id = intval($_POST['answer_id']);
+        
+        error_log('LILAC DEBUG: Converted to integers - question_id: ' . $question_id . ', answer_id: ' . $answer_id);
+        
+        // Prepare response array
+        $response = array(
+            'type' => 'none',
+            'url' => '',
+            'alt' => '',
+        );
+        
+        // Check if ACF is active
+        if (function_exists('get_field')) {
+            error_log('LILAC DEBUG: ACF is active');
+            
+            // Try to get answer-specific media fields
+            $field_patterns = array(
+                'answer_%d_media',
+                'answer_%d_image',
+            'answer_%d_video',
+            'media_answer_%d',
+            'image_answer_%d',
+            'video_answer_%d',
+        error_log('LILAC DEBUG: get_answer_specific_media function called');
+        
+        // Check nonce for security
+        check_ajax_referer('lilac_quiz_sidebar_nonce', 'nonce');
+        
+        // Verify we have the required data
+        if (!isset($_POST['question_id']) || !isset($_POST['answer_id'])) {
+            error_log('LILAC DEBUG: Missing required parameters');
+            wp_send_json_error(array('message' => 'Missing required parameters'));
+            return;
+        }
+        
+        error_log('LILAC DEBUG: Received question_id: ' . $_POST['question_id'] . ', answer_id: ' . $_POST['answer_id']);
+        
+        // Get question and answer IDs
+        $question_id = intval($_POST['question_id']);
+        $answer_id = intval($_POST['answer_id']);
+        
+        error_log('LILAC DEBUG: Converted to integers - question_id: ' . $question_id . ', answer_id: ' . $answer_id);
+        
+        // Prepare response array
+        $response = array(
+            'type' => 'none',
+            'url' => '',
+            'alt' => '',
+        );
+        
+        // Check if ACF is active
+        if (function_exists('get_field')) {
+            error_log('LILAC DEBUG: ACF is active');
+            
+            // Try to get answer-specific media fields
+            $field_patterns = array(
+                'answer_%d_media',
+                'answer_%d_image',
+                'answer_%d_video',
+                'media_answer_%d',
+                'image_answer_%d',
+                'video_answer_%d',
+            );
+            
+            error_log('LILAC DEBUG: Checking field patterns for answer-specific media');
+            
+            // Check each field pattern
+            foreach ($field_patterns as $pattern) {
+                $field_name = sprintf($pattern, $answer_id);
+                error_log('LILAC DEBUG: Checking field: ' . $field_name);
+                
+                $media = get_field($field_name, $question_id);
+                if (!empty($media)) {
+                    error_log('LILAC DEBUG: Found media in field: ' . $field_name);
+                    error_log('LILAC DEBUG: Media data: ' . print_r($media, true));
+                    
+                    // Check if it's an image or video
+                    if (is_array($media) && isset($media['type'])) {
+                        if ($media['type'] == 'image' && isset($media['url'])) {
+                            $response['type'] = 'image';
+                            $response['url'] = $media['url'];
+                            $response['alt'] = isset($media['alt']) ? $media['alt'] : '';
+                            break;
+                        } elseif ($media['type'] == 'video' && isset($media['url'])) {
+                            $response['type'] = 'video';
+                            $response['url'] = $media['url'];
+                            break;
+                        }
+                    } elseif (is_string($media)) {
+                        // Check if it's a video URL
+                        if (strpos($media, 'youtube.com') !== false || 
+                            strpos($media, 'youtu.be') !== false || 
+                            strpos($media, 'vimeo.com') !== false || 
+                            strpos($media, '<iframe') !== false) {
+                            $response['type'] = 'video';
+                            $response['url'] = $media;
+                            
+                            // YouTube video
+                            if (strpos($media, 'youtube.com') !== false || strpos($media, 'youtu.be') !== false) {
+                                $response['youtube_id'] = $this->get_youtube_id($media);
+                            }
+                            // Vimeo video
+                            else if (strpos($media, 'vimeo.com') !== false) {
+                                // Extract Vimeo ID
+                                preg_match('/vimeo\.com\/(?:video\/)?([0-9]+)/', $media, $matches);
+                                if (!empty($matches[1])) {
+                                    $response['vimeo_id'] = $matches[1];
+                                }
+                            }
+                            // Check if it's an iframe embed code rather than a URL
+                            else if (strpos($media, '<iframe') !== false) {
+                                $response['embed_code'] = $media;
+                            }
+                            break;
+                        } else {
+                            // Assume it's an image URL
+                            $response['type'] = 'image';
+                            $response['url'] = $media;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // If we found any media, return it
+        if ($response['type'] !== 'none') {
+            error_log('LILAC DEBUG: Returning media: ' . print_r($response, true));
+            wp_send_json_success(array('media' => $response));
+            return;
+        } else {
+            error_log('LILAC DEBUG: No answer-specific media found');
+        }
+        
+        // If we didn't find answer-specific media, try to get general question media
+        // as a fallback
+        error_log('LILAC DEBUG: Trying to get general question media as fallback');
+        $response = $this->get_question_media_response($question_id);
+        
+        if ($response['type'] !== 'none') {
+            error_log('LILAC DEBUG: Returning general question media: ' . print_r($response, true));
+            wp_send_json_success(array('media' => $response));
+        } else {
+            error_log('LILAC DEBUG: No media found at all for this question');
+            wp_send_json_error(array('message' => 'No media found for this question'));
+        }
+    }
+    
+    /**
+     * AJAX handler for updating quiz sidebar settings
+     */
+    public function ajax_update_quiz_sidebar_settings() {
+        // Check nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'lilac_quiz_sidebar_ajax')) {
+            wp_send_json_error(array('message' => __('Security check failed', 'lilac-quiz-sidebar')));
+        }
+        
+        // Check permissions
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(array('message' => __('Permission denied', 'lilac-quiz-sidebar')));
+        }
+        
+        // Check for post ID
+        if (!isset($_POST['post_id']) || empty($_POST['post_id'])) {
+            wp_send_json_error(array('message' => __('No post ID provided', 'lilac-quiz-sidebar')));
+        }
+        
+        $post_id = intval($_POST['post_id']);
+        
+        // Make sure it's a quiz
+        if (get_post_type($post_id) !== 'sfwd-quiz') {
+            wp_send_json_error(array('message' => __('Not a quiz', 'lilac-quiz-sidebar')));
+        }
+        
+        // Update sidebar toggle
+        if (isset($_POST['toggle_sidebar'])) {
+            if ($_POST['toggle_sidebar'] == '1') {
+                update_post_meta($post_id, self::TOGGLE_SIDEBAR_META_KEY, '1');
+            } else {
+                delete_post_meta($post_id, self::TOGGLE_SIDEBAR_META_KEY);
+            }
+        }
+        
+        // Update enforce hint
+        if (isset($_POST['enforce_hint'])) {
+            if ($_POST['enforce_hint'] == '1') {
+                update_post_meta($post_id, self::ENFORCE_HINT_META_KEY, '1');
+            } else {
+                delete_post_meta($post_id, self::ENFORCE_HINT_META_KEY);
+            }
+        }
+        
+        wp_send_json_success(array('message' => __('Settings updated', 'lilac-quiz-sidebar')));
+    }
+}

@@ -1,0 +1,383 @@
+/**
+ * Quiz Navigation Buttons
+ * Clean, minimal styling for quiz navigation buttons
+ */
+
+/* Style the Check button */
+.wpProQuiz_QuestionButton[name="check"] {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+input.wpProQuiz_button.wpProQuiz_QuestionButton, 
+input.wpProQuiz_button.wpProQuiz_QuestionButton.wpProQuiz_TipButton.lilac-hint-highlight {
+    z-index: 100;
+    position: relative;
+}
+
+input.wpProQuiz_button.wpProQuiz_QuestionButton {
+    z-index: 0;
+    position: relative;
+}
+
+.learndash-wrapper .wpProQuiz_reviewDiv {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Style check button in question buttons */
+.wpProQuiz_questionButtons input[name="check"] {
+    display: inline-block !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 12px 24px !important;
+    margin: 0 5px !important;
+    border: none !important;
+    position: relative !important;
+    left: auto !important;
+    visibility: visible !important;
+    background: #4CAF50 !important;
+    color: white !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Quiz Navigation Container */
+.wpProQuiz_questionButtons {
+    position: relative !important;
+    width: 100% !important;
+    margin: 30px 0 !important;
+    padding: 20px 120px 20px 20px !important; /* Right padding for back button */
+    background: #f8f9fa !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    min-height: 80px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* Main Button Group */
+.wpProQuiz_centerButtons {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 15px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+
+/* Base Button Styles */
+.wpProQuiz_QuestionButton {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 140px !important;
+    padding: 12px 24px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    margin: 0 !important;
+}
+
+/* Back Button */
+.wpProQuiz_QuestionButton[name="back"] {
+    position: absolute !important;
+    right: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: #6c757d !important;
+    color: white !important;
+    z-index: 0 !important;
+    position: relative;
+}
+
+/* Next Button */
+.wpProQuiz_QuestionButton[name="next"] {
+    background: #4CAF50 !important;
+    color: white !important;
+    z-index: 0 !important;
+    position: relative;
+}
+
+/* Hint/Tip Button */
+.wpProQuiz_QuestionButton[name="tip"] {
+    background: #2196F3 !important;
+    color: white !important;
+}
+
+/* Hover Effects */
+.wpProQuiz_QuestionButton:not([name="back"]):hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Hide points display */
+.wpProQuiz_reviewDiv {
+    display: none !important;
+}
+
+.wpProQuiz_questionPoints span {
+    display: none !important;
+}
+
+.wpProQuiz_question_points {
+    display: none !important;
+}
+
+/* Reduce padding for normal quiz type */
+body.quiz-type-normal .wpProQuiz_quiz {
+    padding: 0 10px !important;
+}
+
+/* Ensure Next button is disabled when hint is shown */
+.lilac-hint-message + .wpProQuiz_questionButtons {
+    pointer-events: none !important;
+    opacity: 0.6 !important;
+}
+
+.lilac-hint-message + .wpProQuiz_questionButtons .wpProQuiz_button {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
+
+/* Hint Message Styling */
+.lilac-hint-message {
+    position: relative !important;
+    z-index: 100000 !important;
+}
+
+.wpProQuiz_QuestionButton[name="back"]:hover {
+    transform: translateY(-50%) translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Base button styles */
+.wpProQuiz_QuestionButton {
+    min-width: 140px !important;
+    padding: 12px 24px !important;
+    margin: 0 10px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Next button */
+.wpProQuiz_QuestionButton[name="next"] {
+    background: #4CAF50 !important;
+    color: white !important;
+}
+
+.wpProQuiz_QuestionButton[name="next"]:hover {
+    background: #3d8b40 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Hint button */
+.wpProQuiz_QuestionButton[name="tip"] {
+    background: #2196F3 !important;
+    color: white !important;
+}
+
+.wpProQuiz_QuestionButton[name="tip"]:hover {
+    background: #0b7dda !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Back button */
+.wpProQuiz_QuestionButton[name="back"] {
+    position: absolute !important;
+    right: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: #6c757d !important;
+    color: white !important;
+    margin: 0 !important;
+    z-index: 10 !important;
+}
+
+.wpProQuiz_QuestionButton[name="back"]:hover {
+    background: #5a6268 !important;
+    transform: translateY(-52%) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Button icons */
+.wpProQuiz_QuestionButton:before {
+    margin-left: 8px;
+    font-family: 'dashicons';
+    font-size: 18px;
+    line-height: 1;
+}
+
+.wpProQuiz_QuestionButton[name="next"]:before {
+    content: "\f345";
+}
+
+.wpProQuiz_QuestionButton[name="tip"]:before {
+    content: "\f223";
+}
+
+.wpProQuiz_QuestionButton[name="back"]:before {
+    content: "\f341";
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .wpProQuiz_questionButtons {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px 15px !important;
+    }
+    
+    .wpProQuiz_QuestionButton {
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 5px 0 !important;
+    }
+    
+    .wpProQuiz_QuestionButton[name="back"] {
+        position: static !important;
+        transform: none !important;
+        margin: 10px 0 0 !important;
+    }
+}
+
+/* Button container */
+.wpProQuiz_button {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Hint message styling */
+.lilac-hint-message {
+    background-color: #fff3e0 !important;
+    border: 1px solid #ff9800 !important;
+    border-radius: 4px !important;
+    padding: 10px 15px !important;
+    margin: 15px 0 !important;
+    text-align: right !important;
+    font-size: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    direction: rtl !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Force button styling */
+.lilac-force-hint {
+    display: inline-block !important;
+    visibility: visible !important;
+    background-color: #ff9800 !important;
+    color: white !important;
+    font-weight: bold !important;
+    border: 2px solid #e67e22 !important;
+    border-radius: 4px !important;
+    padding: 8px 24px !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    margin-right: 10px !important;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2) !important;
+}
+
+/* Error message in hint */
+.lilac-hint-message span {
+    font-weight: bold !important;
+    color: #e74c3c !important;
+}
+
+/* Base button styles */
+.wpProQuiz_QuestionButton {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* Previous button */
+.wpProQuiz_QuestionButton[name="back"] {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Hint button */
+.wpProQuiz_QuestionButton[name="tip"] {
+    background-color: #2196F3;
+    color: white;
+}
+
+/* Next button */
+.wpProQuiz_QuestionButton[name="next"] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Hover states */
+.wpProQuiz_QuestionButton:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Disabled state */
+.wpProQuiz_QuestionButton:disabled,
+.wpProQuiz_QuestionButton[aria-disabled="true"],
+.wpProQuiz_QuestionButton.lilac-hidden-next {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Make the Next button more visible when enabled */
+.wpProQuiz_QuestionButton[name="next"]:not(:disabled):not([aria-disabled="true"]) {
+    background-color: #388E3C;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .wpProQuiz_questionButtons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .wpProQuiz_QuestionButton {
+        width: 100%;
+        max-width: 280px;
+    }
+}

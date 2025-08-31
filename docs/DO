@@ -1,0 +1,6 @@
+session-toast.js:85 Uncaught TypeError: warningToast.toast is not a function
+    at hideWarning (session-toast.js:85:26)
+    at HTMLDocument.trackActivity (session-toast.js:38:13)
+    at HTMLDocument.dispatch (jquery.min.js:2:40035)
+    at v.handle (jquery.min.js:2:38006)
+can we do some quick fixes on the toast alerts

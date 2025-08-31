@@ -1,0 +1,156 @@
+the quiz sidebar dom
+
+<div class="quiz-container quiz-with-sidebar">
+        <div class="quiz-content">
+                                <article id="post-4833" class="post-4833 sfwd-quiz type-sfwd-quiz status-publish hentry">
+                        <header class="entry-header">
+                            <h1 class="entry-title">מבחן 01 – לפני הכל לחשוב נכון…</h1>                        </header>
+
+                        <div class="entry-content">
+                            <div id="quiz-content-wrapper"></div>                        </div>
+                    </article>
+                            </div>
+        
+        <aside id="quiz-context" class="ld-quiz-sidebar">
+            <div id="question-media">
+                <div class="media-content question-media-image">
+                    <img src="/wp-content/uploads/2025/05/noPic.png" alt="No Media Available" class="fallback-image">
+                </div>
+                <div class="media-error">
+                    <p>Media could not be loaded</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.
+jquery-migrate.js:104 JQMIGRATE: Migrate is installed with logging active, version 3.4.1
+מבחן-01-לפני-הכל-לחשוב-נכון/:1320 Toast Debug Script Loaded
+מבחן-01-לפני-הכל-לחשוב-נכון/:1532 Lilac Quiz: Answer Reselection script registered
+מבחן-01-לפני-הכל-לחשוב-נכון/:1536 Lilac Quiz: Answer Reselection script loaded successfully
+react-dom.js:29905 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+quiz-answer-flow.new.js:358 Uncaught SyntaxError: missing ) after argument list
+מבחן-01-לפני-הכל-לחשוב-נכון/:1729 DOM fully loaded and parsed
+מבחן-01-לפני-הכל-לחשוב-נכון/:1735 jQuery version: 3.7.1
+מבחן-01-לפני-הכל-לחשוב-נכון/:1744 Found quiz-answer-reselection.js in the DOM
+מבחן-01-לפני-הכל-לחשוב-נכון/:1346 Toast System Status: Object
+debug-script-loader.js:2 Debug Script Loader: Document ready
+debug-script-loader.js:7 Debug Script Loader: Found quiz-answer-reselection script tag: https://19-6.local/wp-content/plugins/lilac-quiz-sidebar/assets/js/quiz-answer-reselection.js
+debug-script-loader.js:31 Debug Script Loader: quiz-answer-reselection.js script tag found in DOM
+debug-script-loader.js:38 Debug Script Loader: LearnDash wpData object not found
+(anonymous) @ debug-script-loader.js:38
+debug-script-loader.js:42 Debug Script Loader: All script tags on page:
+debug-script-loader.js:44 - chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/content/location/location.js
+debug-script-loader.js:44 - chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/extend-native-history-api.js
+debug-script-loader.js:44 - chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/requests.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/jquery.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/jquery-migrate.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/underscore.min.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/woocommerce/assets/js/jquery-blockui/jquery.blockUI.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/woocommerce/assets/js/frontend/add-to-cart.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/woocommerce/assets/js/js-cookie/js.cookie.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/woocommerce/assets/js/frontend/woocommerce.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/wp-util.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/development/react-refresh-runtime.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/development/react-refresh-entry.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/twemoji.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/wp-emoji.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/jet-engine/includes/components/query-builder/assets/js/frontend.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/ui/core.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/ui/mouse.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/ui/draggable.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/backbone.min.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/lib/backbone/backbone.marionette.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/lib/backbone/backbone.radio.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/common-modules.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/web-cli.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/lib/dialog/dialog.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/api-request.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/dev-tools.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/hooks.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/i18n.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/common.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/app-loader.js
+debug-script-loader.js:44 - //19-6.local/wp-content/plugins/sfwd-lms/themes/legacy/templates/learndash_pager.js
+debug-script-loader.js:44 - //19-6.local/wp-content/plugins/sfwd-lms/themes/legacy/templates/learndash_template_script.js
+debug-script-loader.js:44 - //19-6.local/wp-content/plugins/sfwd-lms/assets/js/jquery.dropdown.min.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/lilac-quiz-sidebar/assets/js/debug-script-loader.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/lilac-quiz-sidebar/assets/js/quiz-sidebar-media.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/lilac-quiz-sidebar/assets/js/quiz-sidebar-injection.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/lilac-quiz-sidebar/assets/js/quiz-navigation-control.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/lilac-quiz-sidebar/assets/js/quiz-answer-reselection.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/themes/hello-elementor/assets/js/hello-frontend.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/themes/hello-theme-child-master/includes/messaging/js/toast-system.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/themes/hello-theme-child-master/includes/messaging/js/session-toast.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/themes/hello-theme-child-master/includes/messaging/js/test-timer-toast.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/themes/hello-theme-child-master/includes/messaging/js/alert-helpers.js
+debug-script-loader.js:44 - //19-6.local/wp-content/plugins/sfwd-lms/themes/ld30/assets/js/learndash.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/webpack.runtime.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/frontend-modules.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/frontend.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor-pro/assets/lib/smartmenus/jquery.smartmenus.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor-pro/assets/lib/sticky/jquery.sticky.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/woocommerce/assets/js/sourcebuster/sourcebuster.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/woocommerce/assets/js/frontend/order-attribution.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/woocommerce/assets/js/frontend/add-to-cart-variation.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/yith-woocommerce-subscription-premium/assets/js/ywsbs-frontend.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/vendor/react.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/vendor/react-jsx-runtime.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/deprecated.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/dom.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/vendor/react-dom.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/escape-html.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/element.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/is-shallow-equal.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/keycodes.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/priority-queue.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/compose.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/private-apis.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/redux-routine.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/dist/data.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/yith-woocommerce-subscription-premium/dist/wc-blocks/index.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/themes/hello-theme-child-master/assets/js/quiz-answer-handler.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/themes/hello-theme-child-master/js/scripts.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/ui/resizable.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/ui/controlgroup.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/ui/checkboxradio.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/ui/button.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/jquery/ui/dialog.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/themes/hello-theme-child-master/includes/quiz/assets/js/quiz-answer-flow.new.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor-pro/assets/js/webpack-pro.runtime.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor-pro/assets/js/frontend.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor-pro/assets/js/elements-handlers.js
+debug-script-loader.js:44 - https://19-6.local/wp-content/plugins/elementor/assets/js/elementor-admin-bar.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/hoverintent-js.min.js
+debug-script-loader.js:44 - https://19-6.local/wp-includes/js/admin-bar.js
+session-toast.js:124 Session management initialized
+test-timer-toast.js:139 Test timer initialized
+מבחן-01-לפני-הכל-לחשוב-נכון/:1548 Toast container position set to top-right
+jquery-migrate.js:136 JQMIGRATE: jQuery.fn.focus() event shorthand is deprecated
+migrateWarn @ jquery-migrate.js:136
+jquery-migrate.js:138 console.trace
+migrateWarn @ jquery-migrate.js:138
+obj.<computed> @ jquery-migrate.js:170
+(anonymous) @ learndash.js:476

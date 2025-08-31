@@ -1,0 +1,171 @@
+/**
+ * Quiz Answer Reselection Styles
+ * For the Lilac Quiz Sidebar plugin
+ */
+
+/* Pulse animation for hint button */
+
+.lilac-hint-message, .lilacwpProQuiz_TipButton {
+    position: relative;
+    z-index: 10000;
+}
+.wpProQuiz_button .wpProQuiz_QuestionButton , .wpProQuiz_button.wpProQuiz_QuestionButton {
+    z-index: 0;
+}
+
+/* Hide points and category display */
+.wpProQuiz_questionPoints,
+.wpProQuiz_questionPoints + br,
+span[style*="font-weight: bold; float: right;"],
+div[style*="font-weight: bold; padding-top: 5px;"] {
+    display: none !important;
+}
+
+/* Reduce spacing in quiz content */
+.wpProQuiz_content {
+    margin-top: 10px !important;
+}
+
+.wpProQuiz_question_page {
+    margin: 5px 0 !important;
+}
+@keyframes pulse-button {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+    }
+}
+
+/* Hint button highlight */
+.wpProQuiz_hint.highlight,
+.wpProQuiz_TipButton.highlight {
+    animation: pulse-button 1.5s infinite;
+    background-color: #ffc107 !important;
+    color: #333 !important;
+    font-weight: bold !important;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.7) !important;
+    border-radius: 4px;
+    border: 1px solid #e0a800;
+    transition: all 0.3s ease;
+}
+
+/* Hint button general styling */
+.wpProQuiz_hint,
+.wpProQuiz_TipButton {
+    visibility: visible !important;
+    display: inline-block !important;
+    opacity: 1 !important;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+/* Tooltip styling */
+.hint-tooltip {
+    position: absolute;
+    background-color: #ffc107;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 999;
+    margin-top: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    max-width: 200px;
+    text-align: center;
+    direction: rtl; /* For Hebrew text */
+}
+
+/* Make sure inputs remain clickable */
+.wpProQuiz_questionInput:disabled {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+}
+
+/* Fix for label clicks */
+.wpProQuiz_questionListItem label {
+    pointer-events: auto !important;
+}
+
+/* Ensure buttons are properly visible */
+.wpProQuiz_button[name="check"] {
+    display: inline-block !important;
+}
+
+/* Hide/show Next button as needed */
+.wpProQuiz_incorrect + .wpProQuiz_button[name="next"],
+.wpProQuiz_incorrect ~ .wpProQuiz_button[name="next"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.wpProQuiz_correct + .wpProQuiz_button[name="next"],
+.wpProQuiz_correct ~ .wpProQuiz_button[name="next"] {
+    display: inline-block !important;
+    visibility: visible !important;
+}
+
+/* Hint content styling */
+.wpProQuiz_tipp {
+    background-color: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    padding: 15px !important;
+    margin: 15px 0 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    direction: rtl !important;
+    text-align: right !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
+}
+
+.wpProQuiz_tipp h5 {
+    color: #0d6efd !important;
+    margin-top: 0 !important;
+    margin-bottom: 15px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
+.wpProQuiz_tipp p {
+    margin-bottom: 10px !important;
+    line-height: 1.5 !important;
+}
+
+.wpProQuiz_tipp ul, .wpProQuiz_tipp ol {
+    padding-right: 20px !important;
+    margin: 10px 0 !important;
+}
+
+.wpProQuiz_tipp li {
+    margin-bottom: 5px !important;
+}
+
+/* Make sure the hint button is visible and properly spaced */
+.wpProQuiz_TipButton {
+    background-color: #17a2b8 !important;
+    color: white !important;
+    border: 1px solid #117a8b !important;
+    margin: 5px !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.wpProQuiz_TipButton:hover {
+    background-color: #138496 !important;
+}
+
+/* Ensure the hint content is visible when toggled */
+.wpProQuiz_tipp[style*="display: block"],
+.wpProQuiz_tipp[style*="display:block"] {
+    display: block !important;
+}

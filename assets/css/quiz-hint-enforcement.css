@@ -1,0 +1,56 @@
+/* Hide Next button when enforce hint is active */
+.quiz-enforce-hint .wpProQuiz_button[name="next"],
+.quiz-enforce-hint input[name="next"],
+.quiz-enforce-hint .wpProQuiz_QuestionButton[value*="Next"],
+.quiz-enforce-hint .wpProQuiz_QuestionButton[value*="next"],
+.quiz-enforce-hint .wpProQuiz_QuestionButton[value*="הבא"] {
+    display: none !important;
+}
+
+/* Style for correct but incomplete answers */
+.quiz-enforce-hint .learndash-wrapper .wpProQuiz_content .wpProQuiz_questionListItem:not(.ld-sortable__item).wpProQuiz_answerCorrectIncomplete label {
+    background: initial !important;
+    border-color: #e2e7ed !important;
+}
+
+/* Hide all status indicators */
+.quiz-enforce-hint .ld-quiz-question-item__status,
+.quiz-enforce-hint .wpProQuiz_answerCorrectIncomplete,
+.quiz-enforce-hint .wpProQuiz_answerCorrect,
+.quiz-enforce-hint .wpProQuiz_answerIncorrect {
+    pointer-events: auto !important;
+    cursor: default !important;
+    opacity: 1 !important;
+    border: none !important;
+    background: none !important;
+}
+
+/* Hide status text - including the missed status specifically */
+.quiz-enforce-hint .ld-quiz-question-item__status--correct,
+.quiz-enforce-hint .ld-quiz-question-item__status--incorrect,
+.quiz-enforce-hint .ld-quiz-question-item__status--missed,
+.quiz-enforce-hint span.ld-quiz-question-item__status--missed {
+    display: none !important;
+}
+
+/* Make all answer options look the same */
+.quiz-enforce-hint .wpProQuiz_questionListItem {
+    opacity: 1 !important;
+    pointer-events: none !important;
+    cursor: default !important;
+    border-left: none !important;
+    padding-left: 0 !important;
+}
+
+/* Remove any checkmarks or X marks */
+.quiz-enforce-hint .wpProQuiz_questionInput[type="radio"]:checked:before,
+.quiz-enforce-hint .wpProQuiz_questionInput[type="checkbox"]:checked:before {
+    display: none !important;
+}
+
+/* Hide any score or feedback containers */
+.quiz-enforce-hint .wpProQuiz_response,
+.quiz-enforce-hint .wpProQuiz_questionOverview,
+.quiz-enforce-hint .wpProQuiz_correct {
+    display: none !important;
+}
