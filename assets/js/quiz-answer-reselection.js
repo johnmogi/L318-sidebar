@@ -262,15 +262,24 @@ if (typeof jQuery === 'undefined') {
                 $question.find('.wpProQuiz_questionList').after($responseArea);
             }
             
-            // Add our hint message
-            const $hintMessage = $('<div class="lilac-hint-message" style="background-color: rgb(255, 243, 224); border: 1px solid rgb(255, 152, 0); border-radius: 4px; padding: 10px 15px; margin: 15px 0px; text-align: right; font-size: 16px; display: flex; align-items: center; justify-content: space-between; direction: rtl;">' +
-                '<span style="font-weight:bold;color:#e74c3c;">❌ תשובה שגויה!</span>' +
-                '<span>לחץ על רמז לקבלת עזרה</span>' +
-                '<button type="button" class="lilac-force-hint" style="display: inline-block; visibility: visible; background-color: rgb(255, 152, 0); color: white; font-weight: bold; border: 2px solid rgb(230, 126, 34); border-radius: 4px; padding: 8px 24px; cursor: pointer; font-size: 16px; margin-right: 10px; box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px;">רמז</button>' +
-                '</div>');
-            
-            // Prepend our message to the response area
-            $responseArea.prepend($hintMessage);
+            // Check if hint container already exists
+            let $hintContainer = $responseArea.find('.lilac-hint-container');
+            if (!$hintContainer.length) {
+                // Create permanent hint container that's always visible
+                $hintContainer = $('<div class="lilac-hint-container" style="background-color: rgb(255, 243, 224); border: 1px solid rgb(255, 152, 0); border-radius: 4px; padding: 10px 15px; margin: 15px 0px; text-align: right; font-size: 16px; display: flex; align-items: center; justify-content: space-between; direction: rtl;">' +
+                    '<div class="lilac-error-message" style="display: flex; align-items: center; gap: 10px;">' +
+                        '<span class="lilac-error-text" style="font-weight:bold;color:#e74c3c;">❌ תשובה שגויה!</span>' +
+                        '<span>לחץ על רמז לקבלת עזרה</span>' +
+                    '</div>' +
+                    '<button type="button" class="lilac-force-hint" style="display: inline-block; visibility: visible; background-color: rgb(255, 152, 0); color: white; font-weight: bold; border: 2px solid rgb(230, 126, 34); border-radius: 4px; padding: 8px 24px; cursor: pointer; font-size: 16px; margin-right: 10px; box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px;">רמז</button>' +
+                    '</div>');
+                
+                // Prepend the container to the response area
+                $responseArea.prepend($hintContainer);
+            } else {
+                // Show the error message in existing container
+                $hintContainer.find('.lilac-error-message').show();
+            }
             
             // Make sure hint button is visible
             const $hintButton = $question.find('.wpProQuiz_button[name="tip"]');
@@ -299,8 +308,8 @@ if (typeof jQuery === 'undefined') {
         // Remove lock
         $question.removeClass('lilac-locked');
         
-        // Remove hint message
-        $question.find('.lilac-hint-message').remove();
+        // Hide only the error message, keep the hint container visible
+        $question.find('.lilac-error-message').hide();
         
         // Re-enable answer selection
         $question.find('.wpProQuiz_questionInput').prop('disabled', false);
